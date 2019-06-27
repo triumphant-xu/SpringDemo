@@ -17,6 +17,5 @@ public class TestCat {
         ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
         CatController catController=(CatController) context.getBean("catController");
         catController.showCat();
-
     }
 }
