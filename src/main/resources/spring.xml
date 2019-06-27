@@ -2,9 +2,34 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-    <!--将类在spring中注册-->
+    <!--将类在spring中注册，自动扫描被标注@component的类-->
     <context:component-scan base-package="com"></context:component-scan>
+
+    <!--bean注入-->
+    <bean id="myTrans"  class="com.lsu.MyTransation"></bean>
+    <!--一个类被视作切面时-->
+    <!--它的方法视为通知-->
+    <!--切入点：切面插入的地方-->
+
+    <aop:config>
+
+                                                         <!--切面的目标           任意权限，任意类，任意方法                            -->
+        <aop:pointcut id="myPoint" expression="execution(* com.lsu.service.*.*(..))"/>
+
+
+        <!--ref该切面对应的bean的id-->
+        <aop:aspect id="myaspect" ref="myTrans">
+            <!--method对应通知的名字,ref对应切入点的id-->
+            <aop:before method="openTransation" pointcut-ref="myPoint"/>
+            <aop:after-returning method="closeTransation"  pointcut-ref="myPoint"/>
+            <aop:after-throwing method="throwTransation" pointcut-ref="myPoint" throwing="xxx"/>
+            <aop:after method="finalTransation" pointcut-ref="myPoint"/>
+        </aop:aspect>
+    </aop:config>
+
+
 </beans>

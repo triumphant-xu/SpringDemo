@@ -1,4 +1,4 @@
-import com.controller.CatController;
+import com.lsu.controller.CatController;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
